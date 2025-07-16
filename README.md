@@ -104,7 +104,7 @@ cocFight/
 
 ### 战斗流程
 
-流程图[./graph.png]
+![CoC战斗系统流程图](./graph.png)
 
 ## 🎮 使用示例
 
