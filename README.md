@@ -1,6 +1,15 @@
-# LangGraph + Gemini TypeScript 项目
+# CoC战斗系统 - 基于LangGraph和Gemini的克苏鲁的呼唤战斗模拟器
 
-这是一个使用 LangGraph 和 Google Gemini 构建的 TypeScript 项目示例。
+这是一个使用 LangGraph 和 Google Gemini 构建的《克苏鲁的呼唤》(Call of Cthulhu) 战斗系统。系统实现了完整的战斗轮机制，包括先攻判定、行动解析、骰子系统、伤害计算等功能。
+
+## 🎲 核心特性
+
+- **完整的战斗轮系统**：基于LangGraph状态机的回合制战斗
+- **智能AI守秘人**：使用Gemini模型进行战斗判定和描述
+- **骰子系统**：支持1d20、1d100、伤害骰等多种骰子类型
+- **多智能体架构**：专门的输入分类、行动解析、怪物AI等智能体
+- **实时战斗日志**：详细的战斗过程记录
+- **TypeScript支持**：完整的类型安全和开发体验
 
 ## 🚀 快速开始
 
@@ -12,7 +21,7 @@ npm install
 
 ### 2. 配置环境变量
 
-将 `env.example` 文件复制为 `.env` 并配置你的 Google API 密钥：
+复制环境变量模板并配置你的 Google API 密钥：
 
 ```bash
 cp env.example .env
@@ -22,8 +31,8 @@ cp env.example .env
 
 ```env
 GOOGLE_API_KEY=your_actual_google_api_key_here
-GEMINI_MODEL=gemini-pro
-DEBUG=false
+GEMINI_MODEL=gemini-2.0-flash
+IS_DEBUG=false
 ```
 
 ### 3. 获取 Google API 密钥
@@ -35,117 +44,63 @@ DEBUG=false
 ### 4. 运行项目
 
 ```bash
-# 运行基本示例
-npm start
-
-# 或者使用开发模式（自动重启）
-npm run dev
-
-# 运行高级示例
-npm run advanced
-
-# 或者使用开发模式运行高级示例
-npm run advanced:dev
-
 # 运行CoC战斗演示
 npm run coc-demo
 
-# 运行基础CoC演示（不需要API密钥）
-npm run coc-basic
+# 测试API连接
+npm run test-api
 
-# 构建 TypeScript 项目
+# 构建TypeScript项目
 npm run build
 ```
 
 ## 📁 项目结构
 
 ```
-├── package.json              # 项目配置和依赖
-├── tsconfig.json             # TypeScript 配置
+cocFight/
 ├── src/
-│   ├── index.ts              # 基本示例：简单的聊天机器人
-│   ├── advanced-example.ts   # 高级示例：多节点工作流
-│   ├── types.ts              # TypeScript 类型定义
-│   ├── coc-combat-types.ts   # CoC战斗相关类型定义
-│   ├── coc-combat-utils.ts   # CoC战斗工具函数
-│   ├── coc-combat-agent.ts   # CoC战斗守秘人Agent（完整版）
-│   └── coc-combat-demo.ts    # CoC战斗演示程序
-├── dist/                     # 编译输出目录
+│   ├── coc-keeper.ts          # 主战斗系统状态机
+│   ├── coc-keeper-demo.ts     # 战斗演示程序
+│   ├── agents.ts              # 智能体定义
+│   ├── types.ts               # TypeScript类型定义
+│   ├── state.ts               # 状态管理
+│   └── tools/
+│       └── dice-tools.ts      # 骰子系统工具
+├── dist/                      # 编译输出目录
+├── test-api.js               # API测试文件
+├── package.json              # 项目配置
+├── tsconfig.json             # TypeScript配置
 ├── env.example               # 环境变量模板
-├── README.md                # 项目说明文档
-└── .env                     # 环境变量文件（需要创建）
+└── README.md                 # 项目说明
 ```
 
-## 🔧 功能特性
-
-### 基本示例 (src/index.ts)
-- 简单的 LangGraph 状态图
-- 与 Gemini 模型的基本交互
-- 错误处理和连接测试
-- 完整的 TypeScript 类型支持
-
-### 高级示例 (src/advanced-example.ts)
-- 多节点工作流
-- 意图识别和路由
-- 条件逻辑和状态管理
-- 复杂的对话处理
-- 严格的类型检查和接口定义
-
-### CoC战斗系统 (src/coc-combat-*.ts)
-- 完整的克苏鲁的呼唤战斗轮状态机
-- 包含先攻、行动解析、状态更新的完整流程
-- 支持调查员和敌人的AI行为
-- 包含SAN检定、伤害计算、状态效果
-- 模块化设计，易于扩展
-
-## 🎯 TypeScript 优势
-
-### 类型安全
-- 编译时类型检查，减少运行时错误
-- 自动补全和智能提示
-- 重构时的类型保证
-
-### 更好的开发体验
-- 强类型的状态管理
-- 明确的接口定义
-- 完整的类型推断
-
-### 可维护性
-- 清晰的代码结构
-- 自文档化的类型信息
-- 更容易的团队协作
-
-## 🎲 CoC战斗系统
-
-### 系统架构
-
-CoC战斗系统是一个基于LangGraph的状态机，完整实现了克苏鲁的呼唤战斗轮的所有逻辑。
+## 🎯 系统架构
 
 ### 核心组件
 
-#### 1. 类型定义 (coc-combat-types.ts)
-- **Participant**: 参与者（调查员/敌人）
-- **ActionChoice**: 行动选择
-- **ActionResult**: 行动结果
-- **CombatStatus**: 战斗状态
-- **ParticipantStatus**: 参与者状态
+#### 1. 状态机 (coc-keeper.ts)
+- **StateGraph**: 基于LangGraph的战斗流程状态机
+- **节点**: 输入路由、战斗初始化、回合处理、行动解析等
+- **条件边**: 根据战斗状态和玩家输入进行流程控制
 
-#### 2. 工具函数 (coc-combat-utils.ts)
-- **DiceRoller**: 骰子系统（1d100、技能检定、对抗检定）
-- **SanityChecker**: SAN检定和疯狂状态
-- **DamageCalculator**: 伤害计算
-- **CombatStateChecker**: 战斗状态检查
-- **AIBehavior**: AI行为逻辑
-- **CombatDescriber**: 战斗描述生成
+#### 2. 智能体系统 (agents.ts)
+- **PlayerInputTriageAgent**: 玩家输入意图分类
+- **PlayerActionAgent**: 玩家行动解析和合法性验证
+- **MonsterAiAgent**: 怪物AI行为决策
+- **RulesKeeperAgent**: 规则查询处理
+- **OocAgent**: 游戏外对话处理
+- **KeeperNarratorAgent**: 守秘人叙述生成
 
-#### 3. 状态机节点
-- **start_combat**: 战斗开始，执行SAN检定
-- **roll_initiative**: 投掷先攻，确定行动顺序
-- **process_turn**: 处理当前回合，选择行动
-- **resolve_action**: 解析行动，计算结果
-- **update_state**: 更新状态，应用效果
-- **start_new_round**: 开始新轮次
-- **end_combat**: 战斗结束
+#### 3. 骰子系统 (tools/dice-tools.ts)
+- **RollDTool**: 支持多种骰子表示法 (1d20, 2d6+3, 1d100-5)
+- **DiceResult**: 完整的骰子结果数据结构
+- **集成LLM**: 通过工具调用实现智能骰子判定
+
+#### 4. 类型系统 (types.ts)
+- **GraphState**: 完整的战斗状态定义
+- **Participant**: 参与者（调查员/敌人）数据结构
+- **ClassifiedIntent**: 玩家输入意图分类
+- **CombatStatus**: 战斗状态枚举
 
 ### 战斗流程
 
@@ -155,236 +110,105 @@ CoC战斗系统是一个基于LangGraph的状态机，完整实现了克苏鲁�
   结束战斗 ← 开始新轮次 ← ← ← ← ← ← ← ← ← ← ← ← ← ← 继续战斗
 ```
 
-### 使用示例
+## 🎮 使用示例
+
+### 基础战斗演示
 
 ```bash
-# 运行基础CoC战斗演示（不需要API密钥）
-npm run demo
-
-# 运行交互式CoC战斗演示（支持玩家输入）
-npm run demo:interactive
+npm run coc-demo
 ```
 
-### 演示内容
+演示包含：
+- 调查员 vs 食尸鬼的完整战斗
+- 先攻判定和回合顺序
+- 武器攻击和伤害计算
+- 闪避和对抗判定
+- 战斗日志和状态更新
 
-基础演示包含：
-- **骰子系统演示**: 1d100、技能检定、对抗检定、统计分析
-- **伤害计算演示**: 不同武器的伤害计算和状态变化
-- **SAN检定演示**: 理智值损失和疯狂状态管理
-- **完整战斗轮**: 调查员 vs 食尸鬼的实际对战
+### API测试
 
-### 实际演示结果
-
-```
-🎲 骰子系统演示
-格斗(50): 失败 (投掷: 65, 目标: 50)
-闪避(30): 大成功! (投掷: 5, 目标: 30)
-统计演示 - 格斗技能(50) 100次投掷:
-成功率: 49% (期望: ~50%)
-
-💥 伤害计算演示
-手枪 (1d10): 9 点伤害
-步枪 (2d6+4): 11 点伤害
-
-🧠 SAN检定演示
-目击食尸鬼: 失去2点理智
-直视克苏鲁: 失去4点理智 (成功检定)
-
-⚔️ 战斗轮演示
-第1轮: 调查员攻击成功，食尸鬼受伤
-第2轮: 调查员攻击失败，食尸鬼反击
-第3轮: 调查员失去意识，食尸鬼获胜
+```bash
+npm run test-api
 ```
 
-### 可扩展功能
+测试内容：
+- Gemini API连接验证
+- 工具调用功能测试
+- 骰子系统集成测试
 
-- **添加新的行动类型**: 在ActionType中添加新类型
-- **自定义敌人**: 扩展ENEMY_TEMPLATES
-- **复杂状态效果**: 扩展StatusEffect系统
-- **高级AI行为**: 改进AIBehavior类
-- **多人战斗**: 扩展参与者系统
+## 🔧 智能体详解
 
-## 🎯 LangGraph 核心概念
+### PlayerInputTriageAgent
+负责将玩家输入分类为：
+- `direct_action`: 直接行动（攻击、闪避等）
+- `query`: 规则查询
+- `ooc`: 游戏外对话
+- `fuzzy_intent`: 模糊意图
 
-### 1. 状态管理
+### PlayerActionAgent
+处理玩家行动：
+- 验证行动合法性
+- 调用骰子系统进行判定
+- 计算伤害和状态变化
+- 生成战斗描述
 
-```typescript
-interface State {
-  messages: BaseMessage[];
-  userIntent: UserIntent | null;
-  needsMoreInfo: boolean;
-}
+### MonsterAiAgent
+控制怪物行为：
+- 基于当前状态做出决策
+- 执行攻击或其他行动
+- 调用骰子系统
+- 更新战斗状态
 
-const StateAnnotation = Annotation.Root({
-  messages: Annotation<BaseMessage[]>({
-    reducer: (left: BaseMessage[], right: BaseMessage[]): BaseMessage[] => left.concat(right),
-    default: (): BaseMessage[] => [],
-  }),
-  userIntent: Annotation<UserIntent | null>({
-    reducer: (left: UserIntent | null, right: UserIntent | null): UserIntent | null => right || left,
-    default: (): UserIntent | null => null,
-  }),
-});
+## 🎲 骰子系统
+
+### 支持的骰子类型
+- **1d20**: 技能检定、命中判定
+- **1d100**: 百分骰、技能检定
+- **伤害骰**: 1d10（手枪）、2d6+4（步枪）等
+- **修正值**: 支持+/-修正值
+
+## 🛠️ 开发指南
+
+### 添加新的行动类型
+1. 在 `types.ts` 中定义新的行动类型
+2. 在相应的智能体中添加处理逻辑
+3. 更新状态机流程
+
+### 扩展骰子系统
+1. 在 `dice-tools.ts` 中添加新的骰子函数
+2. 更新工具描述和参数
+3. 在智能体中集成新功能
+
+### 自定义怪物AI
+1. 修改 `MonsterAiAgent` 的决策逻辑
+2. 添加新的行为模式
+3. 调整AI的响应策略
+
+## 🔍 调试模式
+
+设置环境变量启用调试模式：
+```env
+IS_DEBUG=true
 ```
 
-### 2. 节点定义
+调试模式会输出：
+- 智能体调用日志
+- 状态变化详情
+- 骰子结果
+- 流程控制信息
 
-```typescript
-async function callModel(state: State): Promise<{ messages: BaseMessage[] }> {
-  const messages = state.messages;
-  const response = await model.invoke(messages);
-  return {
-    messages: [response],
-  };
-}
-```
+## 📝 技术栈
 
-### 3. 图形构建
-
-```typescript
-const workflow = new StateGraph(StateAnnotation)
-  .addNode("agent", callModel)
-  .addEdge(START, "agent")
-  .addEdge("agent", END);
-```
-
-### 4. 条件路由
-
-```typescript
-function routeByIntent(state: State): string {
-  switch (state.userIntent) {
-    case "greeting":
-      return "greeting_handler";
-    case "question":
-      return "question_handler";
-    default:
-      return "other_handler";
-  }
-}
-```
-
-## 🔄 工作流示例
-
-高级示例中的工作流程：
-
-```
-用户输入 → 意图分析 → 根据意图路由 → 处理节点 → 检查是否需要更多信息 → 结束或返回
-```
-
-## 📚 可扩展性
-
-基于这个项目，你可以：
-
-1. **添加更多节点类型**
-   - 数据库查询节点
-   - 外部 API 调用节点
-   - 文件处理节点
-
-2. **实现更复杂的路由逻辑**
-   - 基于上下文的路由
-   - 动态路由选择
-   - 并行处理节点
-
-3. **集成不同的接口**
-   - Web 界面
-   - 命令行交互
-   - API 服务
-
-4. **添加持久化存储**
-   - 会话存储
-   - 用户偏好
-   - 对话历史
-
-5. **利用 TypeScript 功能**
-   - 扩展 `types.ts` 中的类型定义
-   - 创建自定义接口和枚举
-   - 使用泛型提高代码复用性
-
-## 🛠️ 常见问题
-
-### Q: 如何获取 Google API 密钥？
-A: 访问 [Google AI Studio](https://aistudio.google.com/)，创建项目并生成 API 密钥。
-
-### Q: 支持哪些 Gemini 模型？
-A: 支持 `gemini-pro`、`gemini-pro-vision` 等模型。
-
-### Q: 如何处理错误？
-A: 项目包含了基本的错误处理，你可以根据需要扩展。
-
-### Q: 如何添加自定义节点？
-A: 创建异步函数，接收状态参数，返回状态更新对象。
+- **LangGraph**: 状态机和工作流管理
+- **Google Gemini**: 大语言模型
+- **TypeScript**: 类型安全和开发体验
+- **Node.js**: 运行时环境
+- **Zod**: 数据验证和模式定义
 
 ## 🤝 贡献
 
-欢迎提交 Issues 和 Pull Requests！
+欢迎提交Issue和Pull Request来改进这个项目！
 
-## 📄 许可证
+## �� 许可证
 
-MIT License
-
-## 🔗 相关链接
-
-- [LangGraph 文档](https://langchain-ai.github.io/langgraph/)
-- [Google Gemini API](https://ai.google.dev/)
-- [LangChain JavaScript](https://js.langchain.com/)
-
----
-
-**享受使用 LangGraph 和 Gemini 构建 AI 应用的乐趣！** 🎉
-
----
-
-## 🎯 项目完成总结
-
-### ✅ 已实现功能
-
-1. **基础LangGraph示例**
-   - 简单聊天机器人 (`index.ts`)
-   - 高级多节点工作流 (`advanced-example.ts`)
-   - 意图识别和条件路由
-
-2. **完整的CoC战斗系统**
-   - 类型安全的TypeScript实现
-   - 完整的骰子系统（1d100、技能检定、对抗检定）
-   - SAN检定和理智值管理
-   - 先攻系统和回合制战斗
-   - 伤害计算和状态管理
-   - 敌人AI行为逻辑
-
-3. **模块化架构**
-   - `coc-combat-types.ts` - 类型定义
-   - `coc-combat-utils.ts` - 工具函数
-   - `coc-combat-agent.ts` - 完整状态机（实验性）
-   - `coc-basic-demo.ts` - 工作演示
-
-### 🚀 演示命令
-
-```bash
-# 基础聊天机器人
-npm start
-
-# 高级多节点示例
-npm run advanced
-
-# CoC战斗系统演示
-npm run coc-basic
-```
-
-### 🎲 CoC战斗系统特色
-
-- **真实的CoC规则实现**: 严格按照克苏鲁的呼唤7版规则
-- **完整的状态机设计**: 包含战斗开始、先攻、回合处理、状态更新的完整流程
-- **智能的AI行为**: 敌人和调查员的行为逻辑
-- **统计验证**: 通过大量投掷验证概率分布的正确性
-- **可扩展架构**: 易于添加新的敌人、技能、法术等
-
-### 🔮 未来扩展方向
-
-- 完善LangGraph状态机的类型兼容性
-- 集成更多CoC规则（法术、装备、环境）
-- 添加Web界面用于交互式游戏
-- 实现多人游戏支持
-- 集成语音识别和语音合成
-- 添加图像生成用于场景描述
-
-这个项目展示了如何使用现代TypeScript和LangGraph构建复杂的TRPG系统，为AI驱动的桌游体验奠定了基础。 
+MIT License 

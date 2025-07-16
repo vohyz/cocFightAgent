@@ -1,0 +1,35 @@
+{
+  "name": "langgraph-gemini-project",
+  "version": "1.0.0",
+  "description": "LangGraph project with Gemini as LLM",
+  "main": "dist/index.js",
+  "type": "module",
+  "scripts": {
+    "build": "tsc",
+    "start": "node dist/index.js",
+    "coc-demo": "tsx src/coc-keeper-demo.ts",
+    "test-api": "node test-api.js"
+  },
+  "keywords": [
+    "langgraph",
+    "gemini",
+    "llm",
+    "ai",
+    "typescript"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "@langchain/core": "^0.3.62",
+    "@langchain/google-genai": "^0.2.14",
+    "@langchain/langgraph": "^0.3.8",
+    "dotenv": "^16.3.1",
+    "langchain": "^0.3.29",
+    "undici": "^7.11.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.10.0",
+    "tsx": "^4.6.0",
+    "typescript": "^5.3.0"
+  }
+}
