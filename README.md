@@ -1,6 +1,6 @@
-# CoC战斗系统 - 基于LangGraph和Gemini的克苏鲁的呼唤战斗模拟器
+# CoC战斗系统 - Python版本
 
-这是一个使用 LangGraph 和 Google Gemini 构建的《克苏鲁的呼唤》(Call of Cthulhu) 战斗系统。系统实现了完整的战斗轮机制，包括先攻判定、行动解析、骰子系统、伤害计算等功能。
+这是使用Python LangGraph和Google Gemini构建的《克苏鲁的呼唤》(Call of Cthulhu) 战斗系统的Python版本。
 
 ## 🎲 核心特性
 
@@ -9,14 +9,14 @@
 - **骰子系统**：支持1d20、1d100、伤害骰等多种骰子类型
 - **多智能体架构**：专门的输入分类、行动解析、怪物AI等智能体
 - **实时战斗日志**：详细的战斗过程记录
-- **TypeScript支持**：完整的类型安全和开发体验
+- **Python支持**：完整的类型安全和开发体验
 
 ## 🚀 快速开始
 
 ### 1. 安装依赖
 
 ```bash
-npm install
+pip install -r requirements.txt
 ```
 
 ### 2. 配置环境变量
@@ -45,13 +45,10 @@ IS_DEBUG=false
 
 ```bash
 # 运行CoC战斗演示
-npm run coc-demo
+python src/coc_keeper_demo.py
 
 # 测试API连接
-npm run test-api
-
-# 构建TypeScript项目
-npm run build
+python test_api.py
 ```
 
 ## 📁 项目结构
@@ -59,31 +56,29 @@ npm run build
 ```
 cocFight/
 ├── src/
-│   ├── coc-keeper.ts          # 主战斗系统状态机
-│   ├── coc-keeper-demo.ts     # 战斗演示程序
-│   ├── agents.ts              # 智能体定义
-│   ├── types.ts               # TypeScript类型定义
-│   ├── state.ts               # 状态管理
+│   ├── coc_keeper.py          # 主战斗系统状态机
+│   ├── coc_keeper_demo.py     # 战斗演示程序
+│   ├── agents.py              # 智能体定义
+│   ├── types.py               # Python类型定义
+│   ├── state.py               # 状态管理
 │   └── tools/
-│       └── dice-tools.ts      # 骰子系统工具
-├── dist/                      # 编译输出目录
-├── test-api.js               # API测试文件
-├── package.json              # 项目配置
-├── tsconfig.json             # TypeScript配置
+│       └── dice_tools.py      # 骰子系统工具
+├── test_api.py               # API测试文件
+├── requirements.txt          # Python依赖
 ├── env.example               # 环境变量模板
-└── README.md                 # 项目说明
+└── README_python.md         # Python版本说明
 ```
 
 ## 🎯 系统架构
 
 ### 核心组件
 
-#### 1. 状态机 (coc-keeper.ts)
+#### 1. 状态机 (coc_keeper.py)
 - **StateGraph**: 基于LangGraph的战斗流程状态机
 - **节点**: 输入路由、战斗初始化、回合处理、行动解析等
 - **条件边**: 根据战斗状态和玩家输入进行流程控制
 
-#### 2. 智能体系统 (agents.ts)
+#### 2. 智能体系统 (agents.py)
 - **PlayerInputTriageAgent**: 玩家输入意图分类
 - **PlayerActionAgent**: 玩家行动解析和合法性验证
 - **MonsterAiAgent**: 怪物AI行为决策
@@ -91,27 +86,23 @@ cocFight/
 - **OocAgent**: 游戏外对话处理
 - **KeeperNarratorAgent**: 守秘人叙述生成
 
-#### 3. 骰子系统 (tools/dice-tools.ts)
+#### 3. 骰子系统 (tools/dice_tools.py)
 - **RollDTool**: 支持多种骰子表示法 (1d20, 2d6+3, 1d100-5)
 - **DiceResult**: 完整的骰子结果数据结构
 - **集成LLM**: 通过工具调用实现智能骰子判定
 
-#### 4. 类型系统 (types.ts)
+#### 4. 类型系统 (types.py)
 - **GraphState**: 完整的战斗状态定义
 - **Participant**: 参与者（调查员/敌人）数据结构
 - **ClassifiedIntent**: 玩家输入意图分类
 - **CombatStatus**: 战斗状态枚举
-
-### 战斗流程
-
-![CoC战斗系统流程图](./graph.png)
 
 ## 🎮 使用示例
 
 ### 基础战斗演示
 
 ```bash
-npm run coc-demo
+python src/coc_keeper_demo.py
 ```
 
 演示包含：
@@ -124,7 +115,7 @@ npm run coc-demo
 ### API测试
 
 ```bash
-npm run test-api
+python test_api.py
 ```
 
 测试内容：
@@ -166,12 +157,12 @@ npm run test-api
 ## 🛠️ 开发指南
 
 ### 添加新的行动类型
-1. 在 `types.ts` 中定义新的行动类型
+1. 在 `types.py` 中定义新的行动类型
 2. 在相应的智能体中添加处理逻辑
 3. 更新状态机流程
 
 ### 扩展骰子系统
-1. 在 `dice-tools.ts` 中添加新的骰子函数
+1. 在 `dice_tools.py` 中添加新的骰子函数
 2. 更新工具描述和参数
 3. 在智能体中集成新功能
 
@@ -197,9 +188,8 @@ IS_DEBUG=true
 
 - **LangGraph**: 状态机和工作流管理
 - **Google Gemini**: 大语言模型
-- **TypeScript**: 类型安全和开发体验
-- **Node.js**: 运行时环境
-- **Zod**: 数据验证和模式定义
+- **Python**: 类型安全和开发体验
+- **Pydantic**: 数据验证和模式定义
 
 ## 🤝 贡献
 
